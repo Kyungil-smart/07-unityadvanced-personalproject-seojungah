@@ -1,7 +1,7 @@
 using Character;
 using UnityEngine;
 
-namespace UI
+namespace UI.Customizing
 {
     public class CustomizingCheckUI : MonoBehaviour
     {

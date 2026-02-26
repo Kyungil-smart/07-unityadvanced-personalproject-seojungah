@@ -1,8 +1,9 @@
 using Character;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace UI
+namespace UI.Customizing
 {
     public class StartButtonUI : MonoBehaviour
     {
@@ -12,10 +13,11 @@ namespace UI
             Button button = GetComponent<Button>();
             button.onClick.AddListener(OnSelect);
         }
-        
-        private void OnSelect()
+
+        void OnSelect()
         {
-            
+            SceneManager.LoadScene("GameScene");
         }
+
     }
 }

@@ -2,7 +2,7 @@ using Character;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace UI.Customizing
 {
     public class CustomizingButtonUI : MonoBehaviour
     {

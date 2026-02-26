@@ -1,18 +1,20 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Core;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Character
 {
     public class CharacterCustomizing : MonoBehaviour
     {
-        [SerializeField] private List<GameObject> _bodyList;
-        [SerializeField] private List<GameObject> _eyesList;
-        [SerializeField] private List<GameObject> _mouthList;
-        [SerializeField] private List<GameObject> _headList;
+        [Header("Customizing Prefabs")]
+        [SerializeField] private List<GameObject> bodyList;
+        [SerializeField] private List<GameObject> eyesList;
+        [SerializeField] private List<GameObject> mouthList;
+        [SerializeField] private List<GameObject> headList;
+        
         private readonly Dictionary<CustomType, int> _selectedList = new Dictionary<CustomType, int>();
-
         public Action<CustomType,int> Select;
 
         void Awake()
@@ -31,18 +33,19 @@ namespace Character
             Select.Invoke(CustomType.Head, _selectedList[CustomType.Head]);
         }
 
-        public void OnItemClick(CustomType type, int index)
+        void OnItemClick(CustomType type, int index)
         {
             _selectedList[type] = index;
 
             switch (type)
             {
-                case CustomType.Body: ChangeOutput(_bodyList,CustomType.Body); break;
-                case CustomType.Eyes: ChangeOutput(_eyesList,CustomType.Eyes); break;
-                case CustomType.Mouth: ChangeOutput(_mouthList,CustomType.Mouth); break;
-                case CustomType.Head: ChangeOutput(_headList,CustomType.Head); break;
-                default: break;
+                case CustomType.Body: ChangeOutput(bodyList,CustomType.Body); break;
+                case CustomType.Eyes: ChangeOutput(eyesList,CustomType.Eyes); break;
+                case CustomType.Mouth: ChangeOutput(mouthList,CustomType.Mouth); break;
+                case CustomType.Head: ChangeOutput(headList,CustomType.Head); break;
             }
+            
+            GameManager.Instance.CharacterOutput = _selectedList;
         }
 
         void ChangeOutput(List<GameObject> list,CustomType type )
