@@ -7,9 +7,11 @@ namespace Character
     {
         [Header("Movement")]
         [SerializeField]private float moveSpeed = 5f;
+        [SerializeField]private float rotateSpeed = 15f;
+        [SerializeField]private Animator animator;
         private Rigidbody _rigidbody;
         private Vector3 _moveInput;
-
+        
         [Header("Attack")]
         [SerializeField]private float attackRadius = 2f;
         [SerializeField]private float attackDelay = 0.5f;
@@ -18,6 +20,43 @@ namespace Character
         
         private float _lastAttackTime;
         private readonly Collider[] _hitColliders = new Collider[10];
+        
+        void Start()
+        {
+            _rigidbody = GetComponent<Rigidbody>();
+        
+            if (animator == null) 
+                animator = GetComponentInChildren<Animator>();
+        }
+
+        void FixedUpdate()
+        {
+            Vector3 targetVelocity = _moveInput * moveSpeed;
+            targetVelocity.y = _rigidbody.linearVelocity.y;
+    
+            _rigidbody.linearVelocity = targetVelocity;
+        }
+        void Update()
+        {
+            float h = Input.GetAxisRaw("Horizontal");
+            float v = Input.GetAxisRaw("Vertical");
+        
+            _moveInput = new Vector3(h, 0, v).normalized;
+
+            if (_moveInput.magnitude > 0.1f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(_moveInput);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+
+                if (animator != null) animator.SetBool("isWalking", true);
+            }
+            else
+            {
+                if (animator != null) animator.SetBool("isWalking", false);
+            }
+
+            AutoAttack();
+        }
         
         void AutoAttack()
         {

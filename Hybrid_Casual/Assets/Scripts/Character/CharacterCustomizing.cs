@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Core;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Character
 {
