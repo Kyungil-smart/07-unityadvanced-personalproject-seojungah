@@ -20,6 +20,7 @@ namespace Character
         
         private float _lastAttackTime;
         private readonly Collider[] _hitColliders = new Collider[10];
+        private ChainsawMotion _chainsawMotion;
         
         void Start()
         {
@@ -27,8 +28,10 @@ namespace Character
         
             if (animator == null) 
                 animator = GetComponentInChildren<Animator>();
+            
+            _chainsawMotion = GetComponentInChildren<ChainsawMotion>(true);
         }
-
+        
         void FixedUpdate()
         {
             Vector3 targetVelocity = _moveInput * moveSpeed;
@@ -60,6 +63,8 @@ namespace Character
         
         void AutoAttack()
         {
+            if (_chainsawMotion == null || !_chainsawMotion.isEquipped) return;
+            
             if (Time.time - _lastAttackTime >= attackDelay)
             {
                 // 충돌 검사 후 GameObject의 참조를 반환
@@ -72,8 +77,11 @@ namespace Character
                 
                     if (resource != null)
                     {
-                        resource.TakeDamage(attackDamage);
-                    
+                        Vector3 hitDirection = (resource.transform.position - transform.position).normalized;
+                        hitDirection.y = 0;
+
+                        resource.TakeDamage(attackDamage, hitDirection); 
+                
                         Vector3 lookTarget = new Vector3(_hitColliders[0].transform.position.x, transform.position.y, _hitColliders[0].transform.position.z);
                         transform.LookAt(lookTarget);
                     }

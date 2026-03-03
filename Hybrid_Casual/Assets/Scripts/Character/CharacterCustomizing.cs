@@ -30,6 +30,13 @@ namespace Character
             Select.Invoke(CustomType.Eyes, _selectedList[CustomType.Eyes]);
             Select.Invoke(CustomType.Mouth, _selectedList[CustomType.Mouth]);
             Select.Invoke(CustomType.Head, _selectedList[CustomType.Head]);
+            
+            if (GameManager.Instance == null || GameManager.Instance.CharacterOutput.Count == 0) return;
+
+            ApplyCustom(CustomType.Body, bodyList);
+            ApplyCustom(CustomType.Eyes, eyesList);
+            ApplyCustom(CustomType.Mouth, mouthList);
+            ApplyCustom(CustomType.Head, headList);
         }
 
         void OnItemClick(CustomType type, int index)
@@ -64,8 +71,19 @@ namespace Character
                 }
             }
         }
+        
+        void ApplyCustom(CustomType type, List<GameObject> list)
+        {
+            if (GameManager.Instance.CharacterOutput.TryGetValue(type, out int savedIndex))
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    list[i].SetActive(i == savedIndex);
+                }
+            }
+        }
     }
-
+    
     public enum CustomType
     {
         Body,
