@@ -77,9 +77,18 @@ namespace Character
                 
                     if (resource != null)
                     {
-                        Vector3 hitDirection = (resource.transform.position - transform.position).normalized;
+                        Vector3 hitDirection = _hitColliders[0].transform.position - transform.position;
                         hitDirection.y = 0;
 
+                        if (hitDirection == Vector3.zero)
+                        {
+                            hitDirection = transform.forward;
+                        }
+                        else
+                        {
+                            hitDirection.Normalize();
+                        }
+                        
                         resource.TakeDamage(attackDamage, hitDirection); 
                 
                         Vector3 lookTarget = new Vector3(_hitColliders[0].transform.position.x, transform.position.y, _hitColliders[0].transform.position.z);

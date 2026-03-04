@@ -13,6 +13,7 @@ namespace Operation
 
             if (other.CompareTag("Player"))
             {
+                Debug.Log("Drop Item");
                 StackManager stackManager = other.GetComponent<StackManager>();
             
                 // 가방이 꽉 차있는지 확인

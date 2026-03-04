@@ -192,8 +192,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.3, y: 1.7600002, z: 17.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5608549301621234973}
   - {fileID: 2456078364854747972}
@@ -282,12 +282,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55825cc4e25d489c9302df6a3268027f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 10
-  dropItemPrefab: {fileID: 0}
-  dropCount: 1
+  maxHp: 3
+  dropItemPrefab: {fileID: 1573910477773570145, guid: 317182635d236144d98309cf50cfa9a0, type: 3}
+  dropCount: 3
   hpCanvas: {fileID: 8550439367927661331}
   hpSlider: {fileID: 3564527175531635816}
   bloodEffectPrefab: {fileID: 2749019658906233392, guid: 7e1c32d49b6db4d4c9c35801ff4be4a9, type: 3}
+  floorEffectPrefab: {fileID: 4601361288416060492, guid: be44962c8a5bcfe44a117d92cd2e69a6, type: 3}
+  knockbackDistance: 0.5
+  knockbackDuration: 0.1
 --- !u!114 &6062364331222612152
 MonoBehaviour:
   m_ObjectHideFlags: 0

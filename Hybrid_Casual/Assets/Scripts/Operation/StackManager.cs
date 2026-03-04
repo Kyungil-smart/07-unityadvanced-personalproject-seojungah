@@ -1,16 +1,39 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace Operation
 {
     public class StackManager : MonoBehaviour
     {
-        [Header("Stack Settings")] public Transform stackPoint;
-        public float itemHeight = 0.5f;
-        public int maxStack = 10;
+        [Header("Stack Settings")]
+        [SerializeField] private Transform stackPoint;
+        [SerializeField] private GameObject backStand;
+        [SerializeField] private float itemHeight = 0.5f;
+        [SerializeField] private int maxStack = 10;
 
+        [Header("UI")]
+        [SerializeField] private TextMeshProUGUI stackCountText;
+        
         private readonly List<Transform> _stackedItems = new List<Transform>();
 
+        void Start()
+        {
+            UpdateStackUI();
+        }
+        
+        void Update()
+        {
+            if (_stackedItems.Count > 0)
+            {
+                backStand.SetActive(true);
+            }
+            else
+            {
+                backStand.SetActive(false);
+            }
+        }
+        
         /// <summary>
         /// 아이템을 넣을 수 있는지 확인하는 함수
         /// </summary>
@@ -40,6 +63,20 @@ namespace Operation
 
             item.localPosition = targetPos;
             item.localRotation = Quaternion.identity;
+            UpdateStackUI();
+        }
+        
+        public void RemoveItem()
+        {
+            UpdateStackUI();
+        }
+        
+        void UpdateStackUI()
+        {
+            if (stackCountText != null)
+            {
+                stackCountText.text = $"{_stackedItems.Count}/{maxStack}";
+            }
         }
     }
 }
