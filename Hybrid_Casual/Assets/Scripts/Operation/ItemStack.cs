@@ -48,12 +48,18 @@ namespace Operation
         public void AddItem(GameObject item)
         {
             if (!CanStack()) return;
-
-            StackedItems.Push(item);
-
+            
             // 물리 충돌 제거
-            Destroy(item.GetComponent<Rigidbody>());
-            Destroy(item.GetComponent<Collider>());
+            StackedItems.Push(item);
+            Rigidbody rb = item.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                Destroy(rb); // 그 다음 삭제
+            }
+            Collider col = item.GetComponent<Collider>();
+            if (col != null) Destroy(col);
 
             // transform를 따라감
             item.transform.SetParent(stackPoint);

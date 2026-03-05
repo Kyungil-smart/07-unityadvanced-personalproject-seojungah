@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Character;
 using UnityEngine;
@@ -8,7 +9,9 @@ namespace Core
     {
         public static GameManager Instance;
         public Dictionary<CustomType, int> CharacterOutput = new Dictionary<CustomType, int>();
-
+        public int currentMoney = 0;
+        public Action<int> OnMoneyChanged;
+        
         void Awake()
         {
             if (null == Instance)
@@ -20,6 +23,12 @@ namespace Core
             {
                 Destroy(gameObject);
             }
+        }
+        
+        public void AddMoney(int amount)
+        {
+            currentMoney += amount;
+            OnMoneyChanged?.Invoke(currentMoney);
         }
     }
 }

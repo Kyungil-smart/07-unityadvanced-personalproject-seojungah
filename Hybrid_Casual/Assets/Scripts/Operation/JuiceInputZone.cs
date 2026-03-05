@@ -11,7 +11,6 @@ namespace Operation
         {
             if (other.CompareTag("Player"))
             {
-                Debug.Log("Juice input");
                 ItemStack stackManager = other.GetComponent<ItemStack>();
                 foreach (GameObject item in stackManager.StackedItems)
                 {

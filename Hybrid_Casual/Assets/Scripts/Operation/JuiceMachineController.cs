@@ -7,7 +7,8 @@ namespace Operation
 {
     public class JuiceMachineController : MonoBehaviour
     {
-        [Header("Prefabs")] [SerializeField] private Transform inputPoint;
+        [Header("Prefabs")]
+        [SerializeField] private Transform inputPoint;
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private GameObject juicePrefab;
 
