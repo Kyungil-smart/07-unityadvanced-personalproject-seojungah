@@ -1,3 +1,4 @@
+using Core;
 using UnityEngine;
 
 namespace Operation
@@ -13,14 +14,14 @@ namespace Operation
 
             if (other.CompareTag("Player"))
             {
-                Debug.Log("Drop Item");
-                StackManager stackManager = other.GetComponent<StackManager>();
+                ItemStack itemStack = other.GetComponent<ItemStack>();
             
                 // 가방이 꽉 차있는지 확인
-                if (stackManager != null && stackManager.CanStack())
+                if (itemStack != null && itemStack.CanStack())
                 {
                     _isPickedUp = true;
-                    stackManager.AddItem(transform);
+                    itemStack.AddItem(gameObject);
+                    SoundManager.Instance.PlaySfx(SfxType.Item);
                 }
             }
         }

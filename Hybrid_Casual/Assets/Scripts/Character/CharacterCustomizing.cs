@@ -1,11 +1,17 @@
 using System;
 using System.Collections.Generic;
 using Core;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Character
 {
+    public enum CustomType
+    {
+        Body,
+        Eyes,
+        Mouth,
+        Head,
+    }
     public class CharacterCustomizing : MonoBehaviour
     {
         [Header("Customizing Prefabs")]
@@ -13,54 +19,40 @@ namespace Character
         [SerializeField] private List<GameObject> eyesList;
         [SerializeField] private List<GameObject> mouthList;
         [SerializeField] private List<GameObject> headList;
-        
+
         private Dictionary<CustomType, int> _selectedList = new Dictionary<CustomType, int>();
-        public Action<CustomType,int> Select;
+        public Action<CustomType, int> Select;
 
         void Awake()
         {
             Select += OnItemClick;
+            
+            foreach (CustomType type in Enum.GetValues(typeof(CustomType)))
+            {
+                _selectedList[type] = 0;
+            }
         }
+
         void Start()
         {
-            if (GameManager.Instance != null || GameManager.Instance.CharacterOutput.Count > 0) 
+            if (GameManager.Instance != null && GameManager.Instance.CharacterOutput.Count > 0)
             {
                 _selectedList = new Dictionary<CustomType, int>(GameManager.Instance.CharacterOutput);
                 foreach (var output in _selectedList)
                 {
                     ChangeOutput(output.Key);
                 }
-
-            }else
-            {
-                foreach (CustomType type in Enum.GetValues(typeof(CustomType)))
-                {
-                    InitSelectedList(type,0);
-                    Select.Invoke(type, _selectedList[type]);
-                }
             }
-        }
-
-        void InitSelectedList(CustomType type,int value)
-        {
-            _selectedList.Add(type, value);
-            _selectedList.Add(type, value);
-            _selectedList.Add(type, value);
-            _selectedList.Add(type, value);
+            foreach (CustomType type in Enum.GetValues(typeof(CustomType)))
+            {
+                Select.Invoke(type, _selectedList[type]);
+            }
         }
 
         void OnItemClick(CustomType type, int index)
         {
             _selectedList[type] = index;
-
-            switch (type)
-            {
-                case CustomType.Body: ChangeOutput(CustomType.Body); break;
-                case CustomType.Eyes: ChangeOutput(CustomType.Eyes); break;
-                case CustomType.Mouth: ChangeOutput(CustomType.Mouth); break;
-                case CustomType.Head: ChangeOutput(CustomType.Head); break;
-            }
-            
+            ChangeOutput(type);
             GameManager.Instance.CharacterOutput = _selectedList;
         }
 
@@ -93,14 +85,8 @@ namespace Character
                 case CustomType.Head: return headList;
                 default: return null;
             }
-        } 
+        }
     }
-    
-    public enum CustomType
-    {
-        Body,
-        Eyes,
-        Mouth,
-        Head,
-    }
+
+
 }

@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Operation
 {
-    public class StackManager : MonoBehaviour
+    public class ItemStack : MonoBehaviour
     {
-        [Header("Stack Settings")]
+        [Header("Stack")]
         [SerializeField] private Transform stackPoint;
         [SerializeField] private GameObject backStand;
         [SerializeField] private float itemHeight = 0.5f;
@@ -15,7 +15,7 @@ namespace Operation
         [Header("UI")]
         [SerializeField] private TextMeshProUGUI stackCountText;
         
-        private readonly List<Transform> _stackedItems = new List<Transform>();
+        public readonly Stack<GameObject> StackedItems = new Stack<GameObject>();
 
         void Start()
         {
@@ -24,7 +24,7 @@ namespace Operation
         
         void Update()
         {
-            if (_stackedItems.Count > 0)
+            if (StackedItems.Count > 0)
             {
                 backStand.SetActive(true);
             }
@@ -39,30 +39,30 @@ namespace Operation
         /// </summary>
         public bool CanStack()
         {
-            return _stackedItems.Count < maxStack;
+            return StackedItems.Count < maxStack;
         }
 
         /// <summary>
         /// 아이템을 가방에 넣는 함수
         /// </summary>
-        public void AddItem(Transform item)
+        public void AddItem(GameObject item)
         {
             if (!CanStack()) return;
 
-            _stackedItems.Add(item);
+            StackedItems.Push(item);
 
             // 물리 충돌 제거
             Destroy(item.GetComponent<Rigidbody>());
             Destroy(item.GetComponent<Collider>());
 
             // transform를 따라감
-            item.SetParent(stackPoint);
+            item.transform.SetParent(stackPoint);
 
             // 쌓일 위치 계산 (기존 아이템 개수 * 아이템 높이)
-            Vector3 targetPos = new Vector3(0, (_stackedItems.Count - 1) * itemHeight, 0);
+            Vector3 targetPos = new Vector3(0, (StackedItems.Count - 1) * itemHeight, 0);
 
-            item.localPosition = targetPos;
-            item.localRotation = Quaternion.identity;
+            item.transform.localPosition = targetPos;
+            item.transform.localRotation = Quaternion.identity;
             UpdateStackUI();
         }
         
@@ -75,7 +75,7 @@ namespace Operation
         {
             if (stackCountText != null)
             {
-                stackCountText.text = $"{_stackedItems.Count}/{maxStack}";
+                stackCountText.text = $"{StackedItems.Count}/{maxStack}";
             }
         }
     }

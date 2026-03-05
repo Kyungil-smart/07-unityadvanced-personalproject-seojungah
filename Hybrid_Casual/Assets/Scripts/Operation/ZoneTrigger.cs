@@ -1,4 +1,5 @@
 using Character;
+using Core;
 using UnityEngine;
 
 namespace Operation
@@ -17,6 +18,7 @@ namespace Operation
                 {
                     chainsaw.SetEquip(isCombatZone);
                 }
+                SoundManager.Instance.MuteSfx();
             }
         }
         
@@ -29,6 +31,7 @@ namespace Operation
                 {
                     chainsaw.SetEquip(!isCombatZone);
                 }
+                SoundManager.Instance.MuteSfx();
             }
         }
         

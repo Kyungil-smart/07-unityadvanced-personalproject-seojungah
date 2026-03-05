@@ -4,16 +4,17 @@ namespace Monster
 {
     public class MonsterAI : MonoBehaviour
     {
-        [Header("Settings")]
         [SerializeField] private float moveSpeed = 3f;
         [SerializeField] private float detectRange = 7f;
         
         private Transform _player;
         private Vector3 _randomWaypoint;
         private float _waypointTimer;
+        private Rigidbody _rigidbody;
 
         void Start()
         {
+            _rigidbody =  GetComponent<Rigidbody>();
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null)
             {
@@ -47,13 +48,29 @@ namespace Monster
 
         void MoveToTarget(Vector3 targetPos)
         {
-            targetPos.y = transform.position.y; 
-
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
-            
-            if (Vector3.Distance(transform.position, targetPos) > 0.1f)
+            // 거리 체크
+            float distance = Vector3.Distance(transform.position, targetPos);
+            if (distance > 0.1f)
             {
-                transform.LookAt(targetPos);
+                // 방향 계산
+                Vector3 direction = (targetPos - transform.position).normalized;
+                // 수평 이동만 계산
+                direction.y = 0; 
+
+                float currentYVelocity = _rigidbody.linearVelocity.y;
+                _rigidbody.linearVelocity = new Vector3(direction.x * moveSpeed, currentYVelocity, direction.z * moveSpeed);
+                
+                // 회전 처리
+                if (direction != Vector3.zero)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
+                }
+            }
+            else
+            {
+                // 목표 도착 시 정지
+                _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
             }
         }
 

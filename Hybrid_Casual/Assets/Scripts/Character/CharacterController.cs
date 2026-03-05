@@ -1,3 +1,4 @@
+using Core;
 using Monster;
 using UnityEngine;
 
@@ -89,6 +90,7 @@ namespace Character
                             hitDirection.Normalize();
                         }
                         
+                        SoundManager.Instance.PlaySfx(SfxType.Attack);
                         resource.TakeDamage(attackDamage, hitDirection); 
                 
                         Vector3 lookTarget = new Vector3(_hitColliders[0].transform.position.x, transform.position.y, _hitColliders[0].transform.position.z);

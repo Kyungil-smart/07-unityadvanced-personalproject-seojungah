@@ -1,4 +1,5 @@
 using Character;
+using Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +20,7 @@ namespace UI.Customizing
         private void OnSelect()
         {
             characterCustomizing.Select.Invoke(type, index);
+            SoundManager.Instance.PlaySfx(SfxType.Click);
         }
     }
 }

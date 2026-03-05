@@ -1,3 +1,4 @@
+using System;
 using Character;
 using UnityEngine;
 
@@ -12,8 +13,13 @@ namespace UI.Customizing
         {
             characterCustomizing.Select += ShowCheckIcon;
         }
-        
-        private void ShowCheckIcon(CustomType checkType, int checkIndex)
+
+        private void Start()
+        {
+            gameObject.SetActive(false);
+        }
+
+        void ShowCheckIcon(CustomType checkType, int checkIndex)
         {
             if (checkType != type) return;
             if (checkIndex == index)
