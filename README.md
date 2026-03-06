@@ -1,1 +1,38 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=22871633&assignment_repo_type=AssignmentRepo)
+# 3D 아케이드 방치형 타이쿤
+## 프로젝트 소개
+전기톱을 활용해 몬스터를 사냥하여 재료를 수집합니다.
+주스머신을 통해 주스를 만들어 판매하는 타이쿤 게임입니다.
+플레이어는 채집하고 가공하여, 손님에게 판매하는 과정을 통해 재화를 획득할 수 있습니다.
+
+## 조작법
+WASD 혹은 방향키: 캐릭터 움직임
+ESC: 메뉴
+
+# 스크린샷 및 플레이 영상
+
+
+# 개발 환경
+* Engine: Unity
+* Language: C#
+* Render Pipeline: Universal Render Pipeline (URP)
+* Version: 6000.2.7f2
+
+# 핵심 기능 및 코드 구현 사항
+1. 캐릭터 컨트롤, 자동 전투
+* 입력값에 따라 캐릭터가 이동하며, Physics.OverlapSphereNonAlloc를 사용하여 가비지 컬렉션(GC) 메모리 할당 없이 주변 몬스터를 탐지해 최적화된 자동 공격을 수행합니다.
+* 전투 구역(ZoneTrigger) 진입 시 전기톱을 자동으로 장착하며, 장착 중에는 무기 진동 이펙트를 구현했습니다.
+* 커스터마이징: Body, Eyes, Mouth, Head 부위별 파츠를 변경할 수 있으며, 선택된 데이터는 싱글톤 매니저를 통해 씬 전환 시에도 유지됩니다.
+
+2. 스택 시스템
+* 드롭된 아이템 획득 시 플레이어 등 뒤의 설정된 높이 간격에 맞춰 차곡차곡 쌓입니다.
+* 아이템이 가방으로 이동할 때 코루틴(Coroutine)과 Vector3.Lerp를 활용하여 자연스럽게 이동하는 궤적을 연출했습니다.
+
+3. 생산, 판매 자동화
+* 가방 속 아이템을 투입구에 넣으면 큐(Queue) 대기열에 등록되며, 정해진 시간에 따라 순차적으로 주스가 생산됩니다.
+* 완성된 주스는 배출구에 일정한 격자 형태로 자동 정렬됩니다.
+* NavMeshAgent를 사용하는 손님 AI가 진열대의 주스를 구매하면 GameManager를 통해 재화가 추가됩니다.
+
+4. 몬스터 상태 및 AI 제어
+* 인식 범위 내에 플레이어가 있으면 추적하고, 범위를 벗어나면 무작위 웨이포인트로 이동합니다.
+* MonsterSpawner를 통해 활성화된 몬스터 수를 실시간으로 체크하며 일정 주기마다 자동으로 리스폰을 관리합니다.
+* 피격 시 타격 방향에 따른 넉백 효과와 바닥 이펙트를 생성했습니다.
