@@ -9,7 +9,12 @@ WASD 혹은 방향키: 캐릭터 움직임
 ESC: 메뉴
 
 # 스크린샷 및 플레이 영상
-
+![image 01](/Screenshot/1.png)
+![image 02](/Screenshot/2.png)
+![image 03](/Screenshot/3.png)
+![image 04](/Screenshot/4.png)
+![image 05](/Screenshot/5.png)
+![image 06](/Screenshot/6.png)
 
 # 개발 환경
 * Engine: Unity
