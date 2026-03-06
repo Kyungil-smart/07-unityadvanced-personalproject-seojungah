@@ -1,6 +1,7 @@
 using Operation;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI.Field
@@ -9,42 +10,36 @@ namespace UI.Field
     {
         [SerializeField] private JuiceMachineController juiceMachineController;
 
-        [Header("UI")] [SerializeField] private TextMeshProUGUI countText;
+        [Header("UI")]
+        [SerializeField] private TextMeshProUGUI makingCountText;
+        [SerializeField] private TextMeshProUGUI juiceCountText;
         [SerializeField] private Slider makeTimeSlider;
 
 
         void Update()
         {
-            if (makeTimeSlider == null) return;
+            if (juiceMachineController == null) return;
 
-            if (juiceMachineController.isWorking)
+            if (makingCountText != null)
             {
-                UpdateUI();
+                makingCountText.text = $"{juiceMachineController.MakeList.Count}/{juiceMachineController.maxCount}";
             }
-            else
+            
+            if (juiceCountText != null)
             {
-                ResetUI();
+                juiceCountText.text = $"{juiceMachineController.JuiceList.Count}";
             }
-        }
 
-        private void UpdateUI()
-        {
             if (makeTimeSlider != null)
             {
-                makeTimeSlider.value = juiceMachineController.currentTimer / juiceMachineController.makeTime;
-            }
-
-            if (countText != null)
-            {
-                countText.text = $"{juiceMachineController.MakeList.Count}/{juiceMachineController.maxCount}";
-            }
-        }
-        
-        private void ResetUI()
-        {
-            if (makeTimeSlider != null)
-            {
-                makeTimeSlider.value = 0;
+                if (juiceMachineController.isWorking)
+                {
+                    makeTimeSlider.value = juiceMachineController.currentTimer / juiceMachineController.makeTime;
+                }
+                else
+                {
+                    makeTimeSlider.value = 0;
+                }
             }
         }
     }

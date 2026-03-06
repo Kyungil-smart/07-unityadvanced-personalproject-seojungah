@@ -54,6 +54,10 @@ namespace Core
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
                 
+                //기본 볼륨 줄이기
+                if (bgmSource != null) bgmSource.volume = 0.5f;
+                if (sfxSource != null) sfxSource.volume = 0.5f;
+                
                 foreach (var bgm in bgmList)
                 {
                     if (!_bgmDict.ContainsKey(bgm.type))  _bgmDict.Add(bgm.type, bgm.clip);
@@ -120,9 +124,34 @@ namespace Core
             }
         }
         
+        /// <summary>
+        /// 효과음 정지
+        /// </summary>
         public void MuteSfx()
         {
             sfxSource.mute = true;
+        }
+        
+        /// <summary>
+        /// 배경음 볼륨 조절
+        /// </summary>
+        public void SetBgmVolume(float volume)
+        {
+            if (bgmSource != null)
+            {
+                bgmSource.volume = volume;
+            }
+        }
+
+        /// <summary>
+        /// 효과음 볼륨 조절
+        /// </summary>
+        public void SetSfxVolume(float volume)
+        {
+            if (sfxSource != null)
+            {
+                sfxSource.volume = volume;
+            }
         }
     }
 }

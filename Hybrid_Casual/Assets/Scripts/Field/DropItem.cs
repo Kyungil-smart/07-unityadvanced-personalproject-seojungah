@@ -1,7 +1,7 @@
 using Core;
 using UnityEngine;
 
-namespace Operation
+namespace Field
 {
     
     public class DropItem : MonoBehaviour

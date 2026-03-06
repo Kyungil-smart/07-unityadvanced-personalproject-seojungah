@@ -838,7 +838,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -3562,6 +3562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 524a77c857d54f3ea0b0b41e2b905e3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentMoney: 0
 --- !u!4 &778134451
 Transform:
   m_ObjectHideFlags: 0
@@ -4857,7 +4858,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.547
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0

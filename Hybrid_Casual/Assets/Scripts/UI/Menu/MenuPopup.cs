@@ -4,23 +4,23 @@ namespace UI.Menu
 {
     public class MenuPopup:MonoBehaviour
     {
-
+        [SerializeField] private GameObject menuPopup;
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                OpenPopup();
+                if (menuPopup != null)
+                {
+                    bool isActive = menuPopup.activeSelf;
+                    menuPopup.SetActive(!isActive);
+                }
             }
         }
         
-        void OpenPopup()
-        {
-            gameObject.SetActive(true);
-        }
-        
+
         public void ClosePopup()
         {
-            gameObject.SetActive(false);
+            menuPopup.SetActive(false);
         }
     }
 }

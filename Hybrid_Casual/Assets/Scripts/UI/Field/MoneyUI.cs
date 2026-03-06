@@ -16,7 +16,8 @@ namespace UI.Field
 
         void UpdateMoneyText(int amount)
         {
-            moneyText.text = $"Gold: {amount:N0}"; // 천단위 콤마 표시
+            // 천단위 콤마 표시
+            moneyText.text = $"{amount:N0}";
         }
     }
 }

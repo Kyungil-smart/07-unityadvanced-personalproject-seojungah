@@ -2,7 +2,7 @@ using Character;
 using Core;
 using UnityEngine;
 
-namespace Operation
+namespace Field
 {
     public class ZoneTrigger : MonoBehaviour
     {

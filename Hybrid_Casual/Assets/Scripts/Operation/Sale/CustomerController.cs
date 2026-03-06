@@ -1,34 +1,47 @@
 using UnityEngine;
 using System.Collections;
 using Core;
+using UnityEngine.AI;
 
 namespace Operation
 {
-    public class CustomerSpawner : MonoBehaviour
+    public class CustomerController : MonoBehaviour
     {
         public JuiceTable targetTable;
         public float moveSpeed = 3f;
         public int juicePrice = 100;
         
+        private NavMeshAgent _agent;
+        private Vector3 _spawnPoint;
         private bool _hasJuice = false;
         private bool _isWaiting = false;
         
+        void Start()
+        {
+            _agent = GetComponent<NavMeshAgent>();
+            _spawnPoint = transform.position;
+            
+            if (targetTable != null)
+            {
+                _agent.SetDestination(targetTable.transform.position);
+            }
+        }
+        
         void Update()
         {
-            if (!_isWaiting)
+            if (!_isWaiting && !_hasJuice)
             {
-                // 손님이 테이블로 이동
-                transform.position = Vector3.MoveTowards(transform.position, targetTable.transform.position, moveSpeed * Time.deltaTime);
-                
-                if (Vector3.Distance(transform.position, targetTable.transform.position) < 1.2f)
+                if (!_agent.pathPending && _agent.remainingDistance <= 1.5f)
                 {
                     _isWaiting = true;
-                    StartCoroutine(CheckTableRoutine());
+                    // 이동 정지
+                    _agent.isStopped = true; 
+                    StartCoroutine(BuyJuiceRoutine());
                 }
             }
         }
         
-        IEnumerator CheckTableRoutine()
+        IEnumerator BuyJuiceRoutine()
         {
             while (!_hasJuice)
             {
@@ -38,7 +51,7 @@ namespace Operation
                 {
                     // 주스 획득
                     juice.transform.SetParent(this.transform);
-                    juice.transform.localPosition = new Vector3(0, 1f, 0.5f); // 손에 든 위치
+                    juice.SetActive(false);
                     _hasJuice = true;
 
                     // 돈 지불
@@ -54,7 +67,14 @@ namespace Operation
         IEnumerator LeaveRoutine()
         {
             _isWaiting = false;
-            yield return new WaitForSeconds(2f);
+            
+            //다시 돌아가고 제거
+            _agent.isStopped = false;
+            _agent.SetDestination(_spawnPoint);
+            while (_agent.pathPending || _agent.remainingDistance > 0.5f)
+            {
+                yield return null;
+            }
             Destroy(gameObject);
         }
     }
